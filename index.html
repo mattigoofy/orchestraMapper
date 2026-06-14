@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orchestra Layout</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/editor.css">
+  <link rel="stylesheet" href="styles/dropdown.css">
+</head>
+<body>
+  <div class="favicon-badge">
+    <img src="favicon.ico" alt="Orchestra Mapper" title="Orchestra Mapper">
+  </div>
+  <div class="controls">
+    <button id="share-btn">Share config</button>
+    <button id="export-btn">Export PNG</button>
+    <button id="print-btn">Print</button>
+  </div>
+  <div class="main-content">
+    <div id="canvas-container">
+      <canvas id="orchestra-canvas"></canvas>
+    </div>
+    <div id="editor-container">
+      <div class="editor-tabs">
+        <button class="tab-btn" data-mode="text">Text</button>
+        <button class="tab-btn" data-mode="visual">Visual</button>
+      </div>
+      <textarea id="json-editor" placeholder="Paste JSON here..." style="display: none;"></textarea>
+      <div id="visual-editor"></div>
+      <button id="apply-btn">Apply</button>
+    </div>
+  </div>
+
+  <script type="module" src="scripts/orchestra.js"></script>
+  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="scripts/editor.js"></script>
+  <script type="module" src="scripts/dropdown.js"></script>
+
+  <footer class="footer">
+    <p>
+      <a href="https://github.com/mattigoofy/mattigoofy.github.io" target="_blank">GitHub</a> • 
+      <a href="https://github.com/mattigoofy/mattigoofy.github.io/issues" target="_blank">Report Issue</a> • 
+      <a href="https://github.com/mattigoofy/orchestraMapper" target="_blank">Figures used</a>
+    </p>
+  </footer>
+</body>
+</html>
