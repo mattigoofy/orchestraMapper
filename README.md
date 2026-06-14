@@ -1,6 +1,7 @@
 # Orchestra Mapper
 
-A Python script to generate orchestra seating layout visualizations. Takes a list of musicians and their sections, then arranges them in concentric half-circles representing the stage layout.
+A Python script to generate orchestra seating layout visualizations. Takes a list of musicians and their sections, then arranges them in concentric half-circles representing the stage layout. 
+It is also available as a static website with a visual editor on GitHub Pages, check it out [here](https://mattigoofy.github.io/orchestraMapper/).
 
 ## Features
 
@@ -38,25 +39,81 @@ Edit `orchestra.json` to customize your layout:
 
 ```json
 {
-  "font_size": 9,
+  "font_size": 15,
   "icon_size": 400,
-  "use_images": false,
-  "image_dir": "figs",
+  "title": "My overview",
+  "use_images": true,
+  "image_url": "https://raw.githubusercontent.com/mattigoofy/orchestraMapper/main/figs/",
+  "show_labels": false,
+  "show_row_count": false,
+  "invert": false,
+  "date": "10 jan 2025",
   "conductor": {
     "name": "John",
-    "color": "#8b4513"
+    "color": "#8b4513",
+    "image": "conductor.png"
+
   },
   "sections": [
     {
-      "name": "trumpet",
+      "name": "Flute",
       "color": "#e74c3c",
-      "image": "violin.png",
       "row": 1,
       "start_index": 0,
       "names": ["Alice", "Bob", ""]
+    },
+    {
+      "name": "Oboe",
+      "color": "#e67e22",
+      "row": 1,
+      "start_index": 1,
+      "names": ["Carol", "Diana", "Eve"]
+    },
+    {
+      "name": "Saxophone",
+      "color": "#3498db",
+      "row": 2,
+      "start_index": 0,
+      "names": ["Frank", "Grace", "Hank", "Ivy", ""]
+    },
+    {
+      "name": "clarinet",
+      "color": "#2ecc71",
+      "row": 2,
+      "start_index": 1,
+      "names": ["Jack", "Kate"]
+    },
+    {
+      "name": "bassoon",
+      "color": "#9b59b6",
+      "row": 3,
+      "start_index": 0,
+      "names": ["Leo", "Mia", "Noah", "Olivia", "Peter", "Quinn"]
+    },
+    {
+      "name": "trumpet",
+      "color": "#f39c12",
+      "row": 3,
+      "start_index": 1,
+      "names": ["", "", "Rachel", "Sam", "Tina", "Uma", "Victor"]
+    },
+    {
+      "name": "Trombone",
+      "color": "#34495e",
+      "row": 4,
+      "start_index": 0,
+      "names": ["Wendy", "Xander"]
+    },
+    {
+      "name": "snare",
+      "color": "#34495e",
+      "row": 4,
+      "start_index": 1,
+      "names": ["Wendy", "Xander"]
     }
   ]
 }
+
 ```
 
 ### Config Options
