@@ -15,6 +15,7 @@ function getEditorMode() {
 function switchEditorMode(mode) {
   const textEditor = document.getElementById('json-editor');
   const visualEditor = document.getElementById('visual-editor');
+  const applyButton = document.getElementById('apply-btn');
 
   document.querySelectorAll('.tab-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.mode === mode);
@@ -23,10 +24,12 @@ function switchEditorMode(mode) {
   if (mode === 'text') {
     textEditor.style.display = 'block';
     visualEditor.style.display = 'none';
+    applyButton.style.display = 'block';
     textEditor.value = JSON.stringify(json_config.currentData, null, 2);
   } else {
     textEditor.style.display = 'none';
     visualEditor.style.display = 'block';
+    applyButton.style.display = 'none';
     renderEditor();
     syncEditorHeight();
   }

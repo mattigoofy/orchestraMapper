@@ -93,7 +93,6 @@ function compressUrl(obj) {
     conductor,
     sections
   ];
-  console.log(JSON.stringify(mini))
 
   return LZString.compressToEncodedURIComponent(JSON.stringify(mini));
 }
@@ -141,7 +140,6 @@ function handleShare() {
   let url = location.origin + location.pathname;
   let params = "?json=" + compressUrl(window.json_config.currentData);
   let fullUrl = url + params;
-  console.log(fullUrl.length)
 
   navigator.clipboard.writeText(fullUrl).then(() => {
     const toast = document.createElement('div');
