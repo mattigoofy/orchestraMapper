@@ -57,13 +57,93 @@ async function handlePrint(canvasId) {
   printWindow.document.close();
 }
 
+function compressUrl(obj) {
+  // Bitmask for booleans: use_images | show_labels | show_row_count | invert
+  const flags = (obj.use_images       ? 1 : 0)
+              | (obj.show_labels      ? 2 : 0)
+              | (obj.show_row_count   ? 4 : 0)
+              | (obj.invert           ? 8 : 0);
+
+  // Strip base URL, keep only the suffix
+  const image_url_suffix = obj.image_url.startsWith(IMAGE_BASE_URL_FALLBACK)
+    ? obj.image_url.slice(IMAGE_BASE_URL_FALLBACK.length)
+    : obj.image_url;
+
+  const conductor = [
+    obj.conductor.name,
+    obj.conductor.color.slice(1), // remove  #
+    obj.conductor.image
+  ];
+
+  const sections = obj.sections.map(s => [
+    s.name,
+    s.color.slice(1), // remove #
+    s.row,
+    s.start_index,
+    s.names
+  ]);
+
+  const mini = [
+    obj.font_size,
+    obj.icon_size,
+    obj.title,
+    flags,
+    image_url_suffix,
+    obj.date,
+    conductor,
+    sections
+  ];
+  console.log(JSON.stringify(mini))
+
+  return LZString.compressToEncodedURIComponent(JSON.stringify(mini));
+}
+
+function decompressUrl(str) {
+  const json = LZString.decompressFromEncodedURIComponent(str);
+  if (!json) return null;
+  const d = JSON.parse(json);
+
+  const flags = d[3];
+  const image_url_suffix = d[4];
+
+  const conductor = {
+    name:  d[6][0],
+    color: "#" + d[6][1],
+    image: d[6][2]
+  };
+
+  const sections = d[7].map(s => ({
+    name:        s[0],
+    color:       "#" + s[1],
+    row:         s[2],
+    start_index: s[3],
+    names:       s[4]
+  }));
+
+  return {
+    font_size:      d[0],
+    icon_size:      d[1],
+    title:          d[2],
+    use_images:     !!(flags & 1),
+    show_labels:    !!(flags & 2),
+    show_row_count: !!(flags & 4),
+    invert:         !!(flags & 8),
+    image_url:      image_url_suffix
+                      ? IMAGE_BASE_URL_FALLBACK + image_url_suffix
+                      : image_url_suffix,
+    date:           d[5],
+    conductor,
+    sections
+  };
+}
+
 function handleShare() {
   let url = location.origin + location.pathname;
-  let params = "?json=" + encodeURIComponent(JSON.stringify(window.json_config.currentData));
+  let params = "?json=" + compressUrl(window.json_config.currentData);
   let fullUrl = url + params;
+  console.log(fullUrl.length)
 
   navigator.clipboard.writeText(fullUrl).then(() => {
-    // Option 1: simple toast (add CSS yourself)
     const toast = document.createElement('div');
     toast.textContent = '🔗 URL copied!';
     toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#333;color:#fff;padding:8px 16px;border-radius:6px;z-index:9999';
@@ -80,8 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let url_params = new URLSearchParams(location.search);
   if (url_params.size > 0 && url_params.get('json') != null) {
-    console.log(url_params.get('json'));
-    window.json_config.currentData = JSON.parse(url_params.get('json'))
+    // console.log(url_params.get('json'));
+    window.json_config.currentData = decompressUrl(url_params.get('json'))
     syncToText();
     renderEditor();
     redraw();
