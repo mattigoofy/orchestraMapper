@@ -199,3 +199,48 @@ body.view-mode #view-container {
   max-height: calc(100vh - 100px);
   border-radius: 8px;
 }
+
+/* ============================================================
+   PHONE / SMALL SCREENS
+   ============================================================ */
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .favicon-badge {
+    display: none;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .controls button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .main-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #canvas-container {
+    flex: none;
+    width: 100%;
+  }
+
+  #editor-container {
+    width: 100%;
+    height: 60vh;
+  }
+
+  .footer {
+    margin-top: 20px;
+  }
+}

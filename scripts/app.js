@@ -24,6 +24,11 @@ function syncEditorHeight() {
   const canvas = document.getElementById('canvas-container');
   const editor = document.getElementById('editor-container');
   if (canvas && editor) {
+    // On small screens the editor sits under the canvas and gets its height from CSS
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      editor.style.height = '';
+      return;
+    }
     editor.style.height = canvas.offsetHeight + 'px';
   }
 }
