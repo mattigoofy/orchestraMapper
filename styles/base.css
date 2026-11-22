@@ -173,3 +173,29 @@ canvas {
   color: var(--accent-blue-dark);
   text-decoration: underline;
 }
+
+/* ============================================================
+   VIEW MODE (?view=1): only the image + download button
+   ============================================================ */
+
+#view-container {
+  display: none;
+}
+
+body.view-mode > :not(#view-container):not(script) {
+  display: none;
+}
+
+body.view-mode #view-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+#view-image {
+  max-width: 100%;
+  max-height: calc(100vh - 100px);
+  border-radius: 8px;
+}

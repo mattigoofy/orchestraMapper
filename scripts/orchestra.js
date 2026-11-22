@@ -117,15 +117,18 @@ function generatePositions(sections, rowBaseRadius = 1.2, rowSpacing = 0.7) {
 // ============================================================
 // CANVAS SETUP
 // ============================================================
+// Fixed design space (3:2), so the drawing is identical on every device; CSS only scales it on screen
+const DESIGN_WIDTH = 1200;
+const DESIGN_HEIGHT = 800;
+const QUALITY_MULTIPLIER = 2;
+
 function setupCanvas(canvas) {
-  const dpr = window.devicePixelRatio || 1;
-  const qualityMultiplier = 2;
-  const w = canvas.clientWidth;
-  const h = canvas.clientHeight;
-  canvas.width = w * dpr * qualityMultiplier;
-  canvas.height = h * dpr * qualityMultiplier;
+  const w = DESIGN_WIDTH;
+  const h = DESIGN_HEIGHT;
+  canvas.width = w * QUALITY_MULTIPLIER;
+  canvas.height = h * QUALITY_MULTIPLIER;
   const ctx = canvas.getContext('2d');
-  ctx.scale(dpr * qualityMultiplier, dpr * qualityMultiplier);
+  ctx.scale(QUALITY_MULTIPLIER, QUALITY_MULTIPLIER);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
   return { ctx, w, h };

@@ -136,9 +136,25 @@ function decompressUrl(str) {
   };
 }
 
-function handleShare() {
+// View mode: show the rendered layout as a plain image (long-press/right-click to save) + download button
+function showView() {
+  const canvas = document.getElementById('orchestra-canvas');
+  canvas.toBlob(blob => {
+    const blobUrl = URL.createObjectURL(blob);
+    document.getElementById('view-image').src = blobUrl;
+    document.getElementById('view-download-btn').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'orchestra.png';
+      link.href = blobUrl;
+      link.click();
+    });
+    document.body.classList.add('view-mode');
+  }, 'image/png');
+}
+
+function handleShare(view = false) {
   let url = location.origin + location.pathname;
-  let params = "?json=" + compressUrl(window.json_config.currentData);
+  let params = "?json=" + compressUrl(window.json_config.currentData) + (view ? "&view=1" : "");
   let fullUrl = url + params;
 
   navigator.clipboard.writeText(fullUrl).then(() => {
@@ -162,7 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.json_config.currentData = decompressUrl(url_params.get('json'))
     syncToText();
     renderEditor();
-    redraw();
+    redraw().then(() => {
+      if (url_params.get('view') === '1') showView();
+    });
 
   } else {
     // Load data, then render editor
@@ -199,4 +217,5 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('export-btn').addEventListener('click', () => exportToPNG('orchestra-canvas', 'orchestra.png'));
   document.getElementById('print-btn').addEventListener('click', () => handlePrint('orchestra-canvas'));
   document.getElementById('share-btn').addEventListener('click', () => handleShare());
+  document.getElementById('share-image-btn').addEventListener('click', () => handleShare(true));
 });
