@@ -174,10 +174,17 @@ function handleShare(view = false) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  let url_params = new URLSearchParams(location.search);
+
+  // ?compress=<full json>: compress it and continue to the short link (view is kept)
+  if (url_params.get('compress') != null) {
+    location.replace(location.pathname + '?json=' + compressUrl(JSON.parse(url_params.get('compress'))) + (url_params.get('view') === '1' ? '&view=1' : ''));
+    return;
+  }
+
   initEditor();
   initDropdowns();
 
-  let url_params = new URLSearchParams(location.search);
   if (url_params.size > 0 && url_params.get('json') != null) {
     // console.log(url_params.get('json'));
     window.json_config.currentData = decompressUrl(url_params.get('json'))
